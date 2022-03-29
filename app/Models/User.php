@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'date_of_birth',
     ];
 
     /**
@@ -35,11 +36,32 @@ class User extends Authenticatable
     ];
 
     /**
+     * The attributes that should be attached
+     *
+     * @var string[]
+     */
+    protected $appends = [
+        'age',
+        'has_birthday',
+    ];
+
+    /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
     protected $casts = [
+        'date_of_birth' => 'datetime',
         'email_verified_at' => 'datetime',
     ];
+
+    public function getAgeAttribute()
+    {
+        return $this->date_of_birth->age;
+    }
+
+    public function getHasBirthdayAttribute(): bool
+    {
+        return $this->date_of_birth->isBirthday();
+    }
 }
